@@ -1,0 +1,97 @@
+lang:
+  scoreboard:
+    title: "&6&lHub"
+    normal:
+      - "&7&m----------------------------"
+      - "&eCurrent Players"
+      - "&f%online%"
+      - ""
+      - "&eRank"
+      - "&f%rankcolor%%rank%"
+      - ""
+      - "&cwww.%website%"
+      - "&7&m----------------------------"
+    queue:
+      - "&7&m----------------------------"
+      - "&eCurrent Players"
+      - "&f%online%"
+      - ""
+      - "&eRank"
+      - "&f%rankcolor%%rank%"
+      - ""
+      - "&6Queue &c(%queue%)"
+      - "&e#%position% / %size%"
+      - "&f(%est%)"
+      - ""
+      - "&cwww.%website%"
+      - "&7&m----------------------------"
+  joinmessage:
+    - "%line%"
+    - "&eWelcome to the &6&lCombo Network&e, %rankcolor%%username%&e!"
+    - ""
+    - "&7 * &e&lWebsite: &fwww.%website%"
+    - "&7 * &e&lStore: &f%store%"
+    - "&7 * &e&lTwitter: &ftwitter.com/%twitter%"
+    - "&7 * &e&lTeamSpeak: &f%teamspeak%"
+    - "%line%"
+  commands:
+    setspawn:
+      callback: "&aUpdated the spawn location."
+
+settings:
+  spawnlocation: "0|100|0|world|0|0"
+  buildpermission: "nitrate.build"
+  voidtp:
+    enabled: true
+    position: -15
+
+items:
+  selector:
+    material: clock
+    amount: 1
+    slot: 0
+    data: 0
+    name: "&6Server Selector"
+    lore:
+      - "%line%"
+      - "&6&lRIGHT CLICK &eto open the &fserver selector&e."
+      - "%line%"
+    action: "openmenu/serverselector"
+  test:
+    material: dhelm
+    amount: 1
+    slot: 8
+    data: 0
+    name: "&cTest Item &7(Click)"
+    lore:
+      - "%line%"
+      - "&6&lRIGHT CLICK &eto open the &fserver selector&e."
+      - "%line%"
+    action: "sendmessage/&cHello there &a%player% &estore: %store%"
+
+inventories:
+  serverselector:
+    title: "&CTest %player%"
+    items:
+      kitmap:
+        material: ghelm
+        amount: 1
+        slot: 0
+        data: 0
+        name: "&e&lKITS"
+        lore:
+          - "%line%"
+          - "&6&lRIGHT CLICK &eto join the &fKits Queue."
+          - "%line%"
+        action: "queue/kits"
+      hcf:
+        material: dhelm
+        amount: 1
+        slot: 8
+        data: 0
+        name: "&e&lHCF"
+        lore:
+          - "%line%"
+          - "&6&lRIGHT CLICK &eto join the &fHCF Queue."
+          - "%line%"
+        action: "queue/hcf"

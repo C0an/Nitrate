@@ -1,0 +1,8 @@
+name: Nitrate
+version: 0.1-SNAPSHOT
+author: Ryan | C0an
+main: club.coan.nitrate.Nitrate
+depend:
+  - Christian
+  - Rinku
+  - Queue
