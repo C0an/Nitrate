@@ -1,8 +1,7 @@
 name: Nitrate
 version: 0.1-SNAPSHOT
-author: Ryan | C0an
+author: Peko Development Team
 main: club.coan.nitrate.Nitrate
 depend:
-  - Christian
-  - Rinku
-  - Queue
+  - pLib
+  - Bridge

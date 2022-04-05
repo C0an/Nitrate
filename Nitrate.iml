@@ -16,11 +16,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="paperspigot-api-0.0.1-SNAPSHOT-RYAN" level="project" />
-    <orderEntry type="library" name="paperspigot-0.0.1-SNAPSHOT-RYAN" level="project" />
     <orderEntry type="library" name="org.projectlombok:lombok:1.18.8" level="project" />
-    <orderEntry type="library" name="Rinku" level="project" />
-    <orderEntry type="library" name="Christian" level="project" />
-    <orderEntry type="module" module-name="Queue" />
+    <orderEntry type="library" name="mspigot" level="project" />
+    <orderEntry type="library" name="pLib" level="project" />
+    <orderEntry type="library" name="Bridge" level="project" />
+    <orderEntry type="library" name="pQueue-Bukkit" level="project" />
   </component>
 </module>

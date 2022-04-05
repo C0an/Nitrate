@@ -1,12 +1,9 @@
 package club.coan.nitrate.listeners;
 
-import club.coan.christian.bukkit.BukkitAPI;
-import club.coan.christian.shared.profile.Profile;
 import club.coan.nitrate.Nitrate;
 import club.coan.nitrate.utils.NitrateItem;
-import club.coan.rinku.other.PlayerUtils;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import lombok.Getter;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,17 +12,28 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.util.Vector;
+import rip.protocol.bridge.bukkit.BukkitAPI;
+import rip.protocol.bridge.shared.profile.Profile;
+import rip.protocol.bridge.shared.utils.TimeUtil;
+import rip.protocol.plib.util.PlayerUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CoreListeners implements Listener {
+
+    @Getter private static List<Player> hidingPlayers = new ArrayList<>();
+    @Getter private static Map<Player, Long> lastDone = new HashMap<>();
+
+
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -39,7 +47,39 @@ public class CoreListeners implements Listener {
         Nitrate.getLang().getJoinMessage().forEach(s -> msg.add(Nitrate.getLang().convert(s, p)));
         p.sendMessage(msg.toArray(new String[0]));
 
-        NitrateItem.getItems().stream().filter(item -> item.getSlot() != -1 && !item.isInventoryItem()).forEach(item -> p.getInventory().setItem(item.getSlot(), item.getItem(p)));
+        NitrateItem.getItems().stream().filter(item -> !item.getSlots().isEmpty() && item.getSlots().stream().noneMatch(integer -> integer == 69420) && !item.isInventoryItem()).forEach(item -> {
+            item.getSlots().forEach(integer -> {
+                p.getInventory().setItem(integer, item.getItem(p));
+            });
+        });
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent e){
+        if(e.getPlayer().getGameMode() == GameMode.CREATIVE)
+            return;
+        if(e.getPlayer().isFlying()){
+            e.getPlayer().setFlying(false);
+            e.getPlayer().setAllowFlight(false);
+            Vector v = e.getPlayer().getLocation().getDirection().multiply(Nitrate.getLang().getDoubleJumpMultiply()).setY(Nitrate.getLang().getDoubleJumpMultiply());
+            e.getPlayer().setVelocity(v);
+            e.getPlayer().playEffect(e.getPlayer().getLocation(), Effect.MOBSPAWNER_FLAMES, 20);
+            e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.FIREWORK_BLAST, 20, 6F/63F);
+            e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.EXPLODE, 1, 126F/63F);
+            e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.WITHER_SHOOT, 1, 126F/63F);
+            e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.BLAZE_HIT, 1, 63F/63F);
+
+        }
+        if(e.getPlayer().isOnGround() && !e.getPlayer().getAllowFlight()){
+            e.getPlayer().setAllowFlight(true);
+        }
+
+    }
+
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        e.setQuitMessage(null);
     }
 
     @EventHandler
@@ -55,6 +95,17 @@ public class CoreListeners implements Listener {
 
     @EventHandler
     public void mobSpawn(EntitySpawnEvent e) {
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent e) {
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onFood(FoodLevelChangeEvent e) {
+        e.setFoodLevel(20);
         e.setCancelled(true);
     }
 
@@ -92,8 +143,18 @@ public class CoreListeners implements Listener {
     }
 
     private boolean canBuild(Player p) {
-        return p.hasPermission(Nitrate.getLang().getBuildPermission()) && p.getGameMode() == GameMode.CREATIVE;
+        return (p.hasMetadata("build") && p.getMetadata("build").get(0).asBoolean()) && p.getGameMode() == GameMode.CREATIVE;
     }
 
+    public static boolean canUseHide(Player p){
+        if(getLastDone().get(p) == null){
+            return true;
+        }
+        if(getLastDone().get(p) + 5000 <= System.currentTimeMillis())
+            return true;
+
+        p.sendMessage(ChatColor.RED + "Please wait " + (TimeUtil.millisToSeconds(getLastDone().get(p) + 5000 - System.currentTimeMillis())) + "s to toggle player visibility!");
+        return false;
+    }
 
 }

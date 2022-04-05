@@ -2,6 +2,6 @@ package club.coan.nitrate.cache;
 
 public class CountCache {
 
-    public static int GLOBAL_COUNT = 0;
+    public static String GLOBAL_COUNT = "0";
 
 }

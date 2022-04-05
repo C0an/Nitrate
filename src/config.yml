@@ -2,7 +2,7 @@ lang:
   scoreboard:
     title: "&6&lHub"
     normal:
-      - "&7&m----------------------------"
+      - "&7&o&m----------------------------"
       - "&eCurrent Players"
       - "&f%online%"
       - ""
@@ -12,16 +12,16 @@ lang:
       - "&cwww.%website%"
       - "&7&m----------------------------"
     queue:
-      - "&7&m----------------------------"
+      - "&7&o&m----------------------------"
       - "&eCurrent Players"
       - "&f%online%"
       - ""
       - "&eRank"
       - "&f%rankcolor%%rank%"
       - ""
-      - "&6Queue &c(%queue%)"
-      - "&e#%position% / %size%"
-      - "&f(%est%)"
+      - "&6Queue &c(%queuename%)"
+      - "&e#%queueposition% / %queuesize%"
+      - "&f(%queueest%)"
       - ""
       - "&cwww.%website%"
       - "&7&m----------------------------"
@@ -37,10 +37,26 @@ lang:
   commands:
     setspawn:
       callback: "&aUpdated the spawn location."
+  toggledplayersoff: "&dYou toggled player visibility off!"
+  toggledplayerson: "&dYou toggled player visibility on!"
+  queue:
+    nolives: "&cYou cannot join the queue as you are currently deathbanned and have no soulbound lives, purchase lives at protocol.rip/store"
+    revived: "&aYou have used one of your lives to revive yourself, you now have %lives%, rejoin the queue to play."
+
+config:
+  website: "combo.rip"
+  twitter: "ComboRIP"
+  discord: "discord.gg/ComboRIP"
+  store: "combo.rip/store"
+  teamspeak: "ts.combo.rip"
 
 settings:
-  spawnlocation: "0|100|0|world|0|0"
-  buildpermission: "nitrate.build"
+  spawnlocation: "world|0|100|0"
+  yaw: 0
+  pitch: 0
+  doublejump:
+    multiply: 1.9
+    y: 1.2
   voidtp:
     enabled: true
     position: -15
@@ -68,6 +84,28 @@ items:
       - "&6&lRIGHT CLICK &eto open the &fserver selector&e."
       - "%line%"
     action: "sendmessage/&cHello there &a%player% &estore: %store%"
+  toggleplayersoffitem:
+    material: lever
+    amount: 1
+    slot: 4
+    data: 0
+    name: "&cTurn Off Players &7(Click)"
+    lore:
+      - "%line%"
+      - "&6&lRIGHT CLICK &eto turn off players"
+      - "%line%"
+    action: "toggleplayers/false/toggleplayersonitem"
+  toggleplayersonitem:
+    material: lever
+    amount: 1
+    slot: 69420 #Blank slot
+    data: 0
+    name: "&cTurn On Players &7(Click)"
+    lore:
+      - "%line%"
+      - "&6&lRIGHT CLICK &eto turn on players"
+      - "%line%"
+    action: "toggleplayers/true/toggleplayersoffitem"
 
 inventories:
   serverselector:
@@ -83,7 +121,7 @@ inventories:
           - "%line%"
           - "&6&lRIGHT CLICK &eto join the &fKits Queue."
           - "%line%"
-        action: "queue/kits"
+        action: "queue/kit"
       hcf:
         material: dhelm
         amount: 1
@@ -94,4 +132,14 @@ inventories:
           - "%line%"
           - "&6&lRIGHT CLICK &eto join the &fHCF Queue."
           - "%line%"
-        action: "queue/hcf"
+        action: "queue/hcf  "
+
+tab:
+  mode: REGULAR
+  startposition: 4
+  0:
+    0: "&cHello"
+  1:
+    0: "&aWorld!"
+  2:
+    0: "&d:D"
